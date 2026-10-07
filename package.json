@@ -1,0 +1,61 @@
+{
+  "name": "@randajan/bounce",
+  "version": "1.0.0",
+  "description": "Tiny JavaScript library for collecting tasks and processing them as a single batch",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/randajan/bounce.git"
+  },
+  "type": "module",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "start": "node ./index.js",
+    "build": "node ./index.js isBuild=true",
+    "prepack": "npm run build",
+    "pack:dry": "npm pack --dry-run"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "keywords": [
+    "async",
+    "batch",
+    "batching",
+    "bounce",
+    "debounce",
+    "queue",
+    "task",
+    "promise",
+    "scheduler",
+    "utility"
+  ],
+  "devDependencies": {
+    "@randajan/simple-lib": "^5.0.1"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "homepage": "https://github.com/randajan/bounce#readme",
+  "bugs": {
+    "url": "https://github.com/randajan/bounce/issues"
+  },
+  "author": {
+    "name": "Jan Randa",
+    "email": "jnranda@gmail.com",
+    "url": "https://www.linkedin.com/in/randajan/"
+  }
+}
