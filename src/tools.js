@@ -1,7 +1,4 @@
 
-const _triggers = ["size", "hard", "soft", "manual"];
-
-
 const MAX_TIMEOUT = 2 ** 31 - 1;
 
 export const validateTimeout = (ms, label) => {
@@ -64,9 +61,4 @@ export const setTimeoutUnref = (callback, ms, unref = false) => {
     const int = setTimeout(callback, ms);
     if (unref) { int?.unref?.(); }
     return int;
-}
-
-export const validateTrigger = (trigger, method)=>{
-    if (_triggers.includes(trigger)) { return trigger; }
-    throw new TypeError(`Bounce${method} trigger expects to be one of: '${_triggers.join("|")}'`);
 }

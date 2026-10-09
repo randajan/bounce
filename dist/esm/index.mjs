@@ -64,7 +64,7 @@ var setTimeoutUnref = (callback, ms, unref = false) => {
   return int;
 };
 
-// src/index.js
+// src/Bounce.js
 var Bounce = class {
   #cfg;
   #int = {};
@@ -179,11 +179,15 @@ var Bounce = class {
     return proc.result;
   }
 };
+
+// src/index.js
 var createBounce = (processTasks, opt = {}) => new Bounce(processTasks, opt);
 var index_default = createBounce;
 export {
   Bounce,
   createBounce,
-  index_default as default
+  index_default as default,
+  setTimeoutUnref,
+  validateTimeout
 };
 //# sourceMappingURL=index.mjs.map

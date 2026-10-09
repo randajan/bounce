@@ -21,7 +21,9 @@ var index_exports = {};
 __export(index_exports, {
   Bounce: () => Bounce,
   createBounce: () => createBounce,
-  default: () => index_default
+  default: () => index_default,
+  setTimeoutUnref: () => setTimeoutUnref,
+  validateTimeout: () => validateTimeout
 });
 module.exports = __toCommonJS(index_exports);
 
@@ -91,7 +93,7 @@ var setTimeoutUnref = (callback, ms, unref = false) => {
   return int;
 };
 
-// src/index.js
+// src/Bounce.js
 var Bounce = class {
   #cfg;
   #int = {};
@@ -206,6 +208,8 @@ var Bounce = class {
     return proc.result;
   }
 };
+
+// src/index.js
 var createBounce = (processTasks, opt = {}) => new Bounce(processTasks, opt);
 var index_default = createBounce;
 //# sourceMappingURL=index.cjs.map
