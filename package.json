@@ -1,6 +1,6 @@
 {
   "name": "@randajan/bounce",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tiny JavaScript library for collecting tasks and processing them as a single batch",
   "repository": {
     "type": "git",
