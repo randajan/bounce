@@ -220,13 +220,19 @@ If no batch is pending, it returns a Promise resolved with `undefined`. Calling 
 
 ### `bounce.flush()`
 
-Discards the pending batch without calling `processTasks`, cancels its timers, and resolves its shared Promise with `undefined`.
+Synchronously removes the pending batch without calling `processTasks`, cancels its timers, and returns its tasks in insertion order. This is useful when the caller wants to recover or handle the unprocessed work elsewhere.
 
 ```js
-await bounce.flush();
+const pendingTasks = bounce.flush();
+
+for (const task of pendingTasks) {
+    await handleElsewhere(task);
+}
 ```
 
-`onEnd` is called with the `"manual"` trigger for a flushed batch. If no batch is pending, `flush()` simply returns a Promise resolved with `undefined` and does not call `onEnd`.
+The shared Promise previously returned by `attach()` is resolved with `undefined`, so callers waiting on the discarded batch are not left pending. `onEnd` is called with the `"manual"` trigger and that settled Promise.
+
+If no batch is pending, `flush()` returns an empty array and does not call `onEnd`.
 
 `flush()` affects only the pending batch. It cannot cancel a processor that has already started.
 
@@ -317,12 +323,12 @@ Without automatic triggers, the caller decides when to process or discard the ba
 - A processor Promise is awaited automatically.
 - A thrown processor error or rejected processor Promise rejects the shared batch Promise.
 - `minSize` discards resolve with `undefined`.
-- `flush()` resolves the discarded batch with `undefined`.
-- Empty calls to `execute()` and `flush()` resolve with `undefined`.
+- `flush()` returns the discarded tasks synchronously and resolves their shared batch Promise with `undefined`.
+- An empty `execute()` returns a Promise resolved with `undefined`; an empty `flush()` returns `[]`.
 - Starting a newer batch does not alter the Promise of an older batch.
 - Lifecycle callback return values never replace the processor result.
 
-Because `undefined` is also a valid processor return value, callers cannot distinguish an explicit `undefined` result from a discarded batch using the resolved value alone. Use an application-level result value, or avoid `minSize` and `flush()` when that distinction matters.
+Because `undefined` is also a valid processor return value, callers waiting on the batch Promise cannot distinguish an explicit `undefined` result from a batch discarded by `minSize` or `flush()`. The caller performing `flush()` receives the discarded tasks directly; other callers should use an application-level result value when they need to distinguish these outcomes.
 
 ## Migration from `@randajan/queue`
 

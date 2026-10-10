@@ -45,9 +45,13 @@ export class Bounce {
     #clear() {
         this.#setTimeout("hard", 0);
         this.#setTimeout("soft", 0);
+        const time = this.#time;
+        const tasks = this.#tasks;
+        const proc = this.#proc;
         this.#time = {};
         this.#tasks = [];
         this.#proc = undefined;
+        return { tasks, proc, time };
     }
 
     #end(trigger, proc) {
@@ -56,10 +60,8 @@ export class Bounce {
 
     #execute(trigger) {
         const { processTasks, minSize } = this.#cfg;
-        const tasks = this.#tasks;
-        const proc = this.#proc;
 
-        this.#clear();
+        const { tasks, proc } = this.#clear();
         if (!proc) { return Promise.resolve(); }
         if (tasks.length < minSize) {
             proc.resolve();
@@ -93,12 +95,11 @@ export class Bounce {
     }
 
     flush() {
-        const proc = this.#proc;
-        this.#clear();
-        if (!proc) { return Promise.resolve();  }
+        const { proc, tasks } = this.#clear();
+        if (!proc) { return [];  }
         proc.resolve();
         this.#end("manual", proc);
-        return proc.result;
+        return tasks;
     }
 
 }

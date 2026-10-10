@@ -152,9 +152,13 @@ var Bounce = class {
   #clear() {
     this.#setTimeout("hard", 0);
     this.#setTimeout("soft", 0);
+    const time = this.#time;
+    const tasks = this.#tasks;
+    const proc = this.#proc;
     this.#time = {};
     this.#tasks = [];
     this.#proc = void 0;
+    return { tasks, proc, time };
   }
   #end(trigger, proc) {
     try {
@@ -164,9 +168,7 @@ var Bounce = class {
   }
   #execute(trigger) {
     const { processTasks, minSize } = this.#cfg;
-    const tasks = this.#tasks;
-    const proc = this.#proc;
-    this.#clear();
+    const { tasks, proc } = this.#clear();
     if (!proc) {
       return Promise.resolve();
     }
@@ -198,14 +200,13 @@ var Bounce = class {
     return this.#execute("manual");
   }
   flush() {
-    const proc = this.#proc;
-    this.#clear();
+    const { proc, tasks } = this.#clear();
     if (!proc) {
-      return Promise.resolve();
+      return [];
     }
     proc.resolve();
     this.#end("manual", proc);
-    return proc.result;
+    return tasks;
   }
 };
 

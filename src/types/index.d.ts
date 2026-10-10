@@ -87,8 +87,11 @@ export class Bounce<Task = unknown, Result = unknown> {
     /** Process the pending batch immediately. */
     execute(): Promise<Result | undefined>;
 
-    /** Discard the pending batch without calling the processor. */
-    flush(): Promise<Result | undefined>;
+    /**
+     * Discard the pending batch without calling the processor and return its
+     * tasks in insertion order. Returns an empty array when no batch is pending.
+     */
+    flush(): Task[];
 }
 
 /** Create a task batcher. */
